@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private Transform transform;
     public float cooldownMovement;
     private float currentCooldownMovement;
+    public string direction = "down";
 
     private GameObject colliders;
     private WallCollider upCollider;
@@ -33,6 +34,26 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButtonDown("Interact"))
+        {
+            if(direction == "up" && upCollider.currentObj != null)
+            {   
+                upCollider.currentObj.Interact();
+            }
+            if (direction == "down" && downCollider.currentObj != null)
+            {
+                downCollider.currentObj.Interact();
+            }
+            if (direction == "left" && leftCollider.currentObj != null)
+            {
+                leftCollider.currentObj.Interact();
+            }
+            if (direction == "right" && rightCollider.currentObj != null)
+            {
+                rightCollider.currentObj.Interact();
+            }
+        }
+
         if(currentCooldownMovement<=0)
         {
             animator.SetBool("isMoving", false);
@@ -43,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
                 ResetMoving();
                 animator.SetBool("isMovingUp", true);
                 animator.SetBool("isMoving", true);
+                direction = "up";
             }
             if (Input.GetButton("Down") && !downCollider.foundWall)
             {
@@ -51,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
                 ResetMoving();
                 animator.SetBool("isMovingDown", true);
                 animator.SetBool("isMoving", true);
+                direction = "down";
             }
             if (Input.GetButton("Left") && !leftCollider.foundWall)
             {
@@ -59,6 +82,8 @@ public class PlayerMovement : MonoBehaviour
                 ResetMoving();
                 animator.SetBool("isMovingLeft", true);
                 animator.SetBool("isMoving", true);
+                direction = "left";
+
             }
             if (Input.GetButton("Right") && !rightCollider.foundWall)
             {
@@ -67,6 +92,8 @@ public class PlayerMovement : MonoBehaviour
                 ResetMoving();
                 animator.SetBool("isMovingRight", true);
                 animator.SetBool("isMoving", true);
+                direction = "right";
+
             }
         }
         else
@@ -76,11 +103,12 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void ResetMoving()
-    {
+    {   
+        animator.SetBool("isMoving", false);
         animator.SetBool("isMovingDown", false);
         animator.SetBool("isMovingUp", false);
         animator.SetBool("isMovingLeft", false);
         animator.SetBool("isMovingRight", false);
-        animator.SetBool("isMoving", false);
+        
     }
 }
