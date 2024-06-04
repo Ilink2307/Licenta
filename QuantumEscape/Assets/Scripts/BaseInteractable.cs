@@ -8,5 +8,13 @@ public class BaseInteractable : MonoBehaviour
     {
 
     }
+    public virtual void PickUp()
+    {
+       
+    }
 
+    public virtual void Drop()
+    {
+        
+    }
 }
