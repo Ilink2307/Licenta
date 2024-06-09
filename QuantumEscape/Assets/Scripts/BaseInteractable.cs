@@ -13,8 +13,8 @@ public class BaseInteractable : MonoBehaviour
        
     }
 
-    public virtual void Drop()
+    public virtual void Drop(Vector3 dropPosition)
     {
-        
+        transform.position = dropPosition;
     }
 }

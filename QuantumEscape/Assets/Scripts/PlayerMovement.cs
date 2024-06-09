@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public int unitMovement;
-    private Transform transform;
+    private Transform playerTransform;
     public float cooldownMovement;
     private float currentCooldownMovement;
     public string direction = "down";
@@ -18,11 +18,12 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator animator;
     private BaseInteractable heldObject;
+    private bool isMovementEnabled = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        transform = GetComponent<Transform>();
+        playerTransform = GetComponent<Transform>();
         colliders = gameObject.transform.Find("WallColliders").gameObject;
         animator = GetComponent<Animator>();
 
@@ -35,6 +36,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isMovementEnabled)
+        {
+            return; // If movement is disabled, exit the update loop
+        }
+
         if (Input.GetButtonDown("Interact"))
         {
             if (heldObject == null)
@@ -80,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetBool("isMoving", true);
                 if (!upCollider.foundWall)
                 {
-                    transform.position = new Vector3(transform.position.x, transform.position.y + unitMovement, transform.position.z);
+                    playerTransform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + unitMovement, playerTransform.position.z);
                     currentCooldownMovement = cooldownMovement;
                     moved = true;
                 }
@@ -92,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetBool("isMoving", true);
                 if (!downCollider.foundWall)
                 {
-                    transform.position = new Vector3(transform.position.x, transform.position.y - unitMovement, transform.position.z);
+                    playerTransform.position = new Vector3(playerTransform.position.x, playerTransform.position.y - unitMovement, playerTransform.position.z);
                     currentCooldownMovement = cooldownMovement;
                     moved = true;
                 }
@@ -104,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetBool("isMoving", true);
                 if (!leftCollider.foundWall)
                 {
-                    transform.position = new Vector3(transform.position.x - unitMovement, transform.position.y, transform.position.z);
+                    playerTransform.position = new Vector3(playerTransform.position.x - unitMovement, playerTransform.position.y, playerTransform.position.z);
                     currentCooldownMovement = cooldownMovement;
                     moved = true;
                 }
@@ -116,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetBool("isMoving", true);
                 if (!rightCollider.foundWall)
                 {
-                    transform.position = new Vector3(transform.position.x + unitMovement, transform.position.y, transform.position.z);
+                    playerTransform.position = new Vector3(playerTransform.position.x + unitMovement, playerTransform.position.y, playerTransform.position.z);
                     currentCooldownMovement = cooldownMovement;
                     moved = true;
                 }
@@ -147,10 +153,15 @@ public class PlayerMovement : MonoBehaviour
             currentCooldownMovement -= Time.deltaTime;
         }
 
-        if (heldObject != null && heldObject is test tempObject)
-        {
-            tempObject.transform.position = transform.position + new Vector3(0, 1, 0); // Adjust this offset as needed
-        }
+        //if (heldObject != null && heldObject is test tempObject)
+        //{
+        //    tempObject.transform.position = playerTransform.position + new Vector3(0, 3, 0); // Adjust this offset as needed
+        //}
+    }
+
+    public void SetMovementEnabled(bool isEnabled)
+    {
+        isMovementEnabled = isEnabled;
     }
 
     void TryPickUpObject()
@@ -177,9 +188,14 @@ public class PlayerMovement : MonoBehaviour
             BaseInteractable tempObj = activeCollider.currentObj.GetComponent<BaseInteractable>();
             if (tempObj != null)
             {
+                Debug.Log("Interacting with object");
                 tempObj.Interact();
                 heldObject = tempObj;
             }
+        }
+        else
+        {
+            Debug.Log("No interactable object found");
         }
     }
 
@@ -187,9 +203,35 @@ public class PlayerMovement : MonoBehaviour
     {
         if (heldObject != null)
         {
+            Vector3 dropPosition = GetValidDropPosition();
             heldObject.Interact();
             heldObject = null;
         }
+    }
+
+    Vector3 GetValidDropPosition()
+    {
+        Vector3 dropPosition = playerTransform.position;
+        switch (direction)
+        {
+            case "up":
+                dropPosition += new Vector3(0, 1, 0);
+                break;
+            case "down":
+                dropPosition += new Vector3(0, -1, 0);
+                break;
+            case "left":
+                dropPosition += new Vector3(-1, 0, 0);
+                break;
+            case "right":
+                dropPosition += new Vector3(1, 0, 0);
+                break;
+        }
+
+        // Adjust the position further if necessary to avoid overlap
+        // For example, add checks to ensure the drop position is not occupied
+
+        return dropPosition;
     }
 
     void ResetMoving()
