@@ -189,8 +189,18 @@ public class PlayerMovement : MonoBehaviour
             if (tempObj != null)
             {
                 Debug.Log("Interacting with object");
-                tempObj.Interact();
-                heldObject = tempObj;
+                if (tempObj is OpenMinigame openMinigameObj)
+                {
+                    openMinigameObj.Interact();
+                }
+                else
+                {
+                    tempObj.Interact();
+                    heldObject = tempObj;
+                }
+                
+
+                
             }
         }
         else
@@ -242,5 +252,6 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isMovingLeft", false);
         animator.SetBool("isMovingRight", false);
     }
+
 
 }
