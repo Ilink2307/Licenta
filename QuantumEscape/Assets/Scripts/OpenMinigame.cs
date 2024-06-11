@@ -21,6 +21,8 @@ public class OpenMinigame : BaseInteractable
         if (interactionCanvas != null)
         {
             interactionCanvas.SetActive(true); // activate canvas when interacting
+            CanvasStuff canvasStuff = interactionCanvas.GetComponent<CanvasStuff>();
+            canvasStuff.openMinigame = this;
             if (playerMovement != null)
             {
                 playerMovement.SetMovementEnabled(false); // disable player movement
