@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class CanvasStuff : MonoBehaviour
 {
-    private OpenMinigame openMinigame;
+    public OpenMinigame openMinigame;
 
     void Start()
     {
-        openMinigame = FindObjectOfType<OpenMinigame>();
+        
     }
 
-    public void ExitCanvas()
+    public void CloseCanvas()
     {
         if (openMinigame != null)
         {

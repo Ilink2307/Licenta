@@ -6,6 +6,7 @@ public class OpenMinigame : BaseInteractable
 {
     public GameObject interactionCanvas;
     private PlayerMovement playerMovement;
+    private bool puzzleSolved = false;
 
     void Start()
     {
@@ -21,6 +22,8 @@ public class OpenMinigame : BaseInteractable
         if (interactionCanvas != null)
         {
             interactionCanvas.SetActive(true); // activate canvas when interacting
+            CanvasStuff canvasStuff = interactionCanvas.GetComponent<CanvasStuff>();
+            canvasStuff.openMinigame = this;
             if (playerMovement != null)
             {
                 playerMovement.SetMovementEnabled(false); // disable player movement
@@ -42,5 +45,13 @@ public class OpenMinigame : BaseInteractable
                 playerMovement.SetMovementEnabled(true); // enable player movement
             }
         }
+        DisableInteraction();
+    }
+
+    public void DisableInteraction()
+    {
+        puzzleSolved = true; // Set the flag to true
+        // Optionally, disable the entire script
+        this.enabled = false;
     }
 }
