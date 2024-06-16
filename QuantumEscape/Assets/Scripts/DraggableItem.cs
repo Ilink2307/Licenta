@@ -6,8 +6,14 @@ using UnityEngine.EventSystems;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+
     public Image image;
     [HideInInspector] public Transform parentAfterDrag;
+
+    private void Start()
+    {
+        image = GetComponent<Image>();
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
         Debug.Log("Begin Drag");
