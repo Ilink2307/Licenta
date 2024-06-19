@@ -42,11 +42,36 @@ public class test : BaseInteractable
     public override void Drop(Vector3 dropPosition)
     {
         isPickedUp = false;
+        SnapToNearestPoint();
         transform.position = dropPosition;
         GetComponent<Collider2D>().enabled = true;
         transform.localScale = originalScale;
         transform.SetParent(null);
         Debug.Log("Dropped the object");
+    }
+
+    private void SnapToNearestPoint()
+    {
+        SnapPoint[] snapPoints = FindObjectsOfType<SnapPoint>();
+        SnapPoint nearestSnapPoint = null;
+        float nearestDistance = float.MaxValue;
+
+        foreach (SnapPoint snapPoint in snapPoints)
+        {
+            float distance = Vector3.Distance(transform.position, snapPoint.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestSnapPoint = snapPoint;
+            }
+        }
+
+        if (nearestSnapPoint != null)
+        {
+            transform.position = nearestSnapPoint.snapPosition.position;
+            nearestSnapPoint.isOccupied = true;
+            PolarizationManager.instance.CheckSnapPoints();
+        }
     }
 
     public void Update()

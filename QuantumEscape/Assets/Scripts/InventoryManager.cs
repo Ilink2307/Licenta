@@ -9,6 +9,25 @@ public class InventoryManager : MonoBehaviour
     public OpenMinigame openMinigame;
     public GameObject targetObject; // Object to change color
     public Color targetColor = Color.green; // Desired color
+    public Color targetColorWhenUnsolved = Color.red;
+
+    private Renderer targetRenderer;
+    private Material targetMaterial;
+
+    private void Start()
+    {
+        targetRenderer = targetObject.GetComponent<Renderer>();
+        if (targetRenderer != null)
+        {
+            targetMaterial = targetRenderer.material;
+            // Set initial color to red (or whatever initial color you want)
+            targetMaterial.color = targetColorWhenUnsolved;
+        }
+        else
+        {
+            Debug.LogWarning("No Renderer found on target object.");
+        }
+    }
     public void CheckOrder()
     {
         foreach (InventorySlot slot in inventorySlots)
@@ -40,24 +59,14 @@ public class InventoryManager : MonoBehaviour
     }
     private void ChangeObjectColor()
     {
-        if (targetObject != null)
+        if (targetMaterial != null)
         {
-            Renderer renderer = targetObject.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                Material material = renderer.material;
-                material.color = targetColor;
-                material.SetColor("_BaseColor", targetColor); // For URP/LWRP
-                material.SetColor("_Color", targetColor); // For standard shaders
-            }
-            else
-            {
-                Debug.LogWarning("No Renderer found on target object.");
-            }
+            // Change the color to green when puzzle is solved
+            targetMaterial.color = targetColor;
         }
         else
         {
-            Debug.LogWarning("Target object reference is not assigned.");
+            Debug.LogWarning("Target material reference is not assigned.");
         }
     }
 
