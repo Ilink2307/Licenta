@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    public InventorySlot[] inventorySlots; // Assign all inventory slots in the inspector
+    public InventorySlot[] inventorySlots;
     public Canvas inventoryCanvas; // Assign the inventory canvas in the inspector
     public OpenMinigame openMinigame;
     public GameObject targetObject; // Object to change color
+    public GameObject cableObject;
     public Color targetColor = Color.green; // Desired color
     public Color targetColorWhenUnsolved = Color.red;
+    public Color cableColor = Color.blue; // Desired color
 
     private Renderer targetRenderer;
     private Material targetMaterial;
+    private Renderer cableRenderer;
+    private Material cableMaterial;
 
     private void Start()
     {
         targetRenderer = targetObject.GetComponent<Renderer>();
-        if (targetRenderer != null)
+        cableRenderer = cableObject.GetComponent<Renderer>();
+        if (targetRenderer != null && cableRenderer)
         {
             targetMaterial = targetRenderer.material;
-            // Set initial color to red (or whatever initial color you want)
             targetMaterial.color = targetColorWhenUnsolved;
+            cableMaterial = cableRenderer.material;
         }
         else
         {
@@ -34,11 +39,10 @@ public class InventoryManager : MonoBehaviour
         {
             if (!slot.IsCorrectItem())
             {
-                return; // If any slot does not have the correct item, return
+                return; 
             }
         }
 
-        // If all slots have the correct items, close the canvas
         CloseCanvas();
         ChangeObjectColor();
         DisableInteraction();
@@ -59,10 +63,11 @@ public class InventoryManager : MonoBehaviour
     }
     private void ChangeObjectColor()
     {
-        if (targetMaterial != null)
+        if (targetMaterial != null && cableMaterial!=null)
         {
             // Change the color to green when puzzle is solved
             targetMaterial.color = targetColor;
+            cableMaterial.color = cableColor;
         }
         else
         {
