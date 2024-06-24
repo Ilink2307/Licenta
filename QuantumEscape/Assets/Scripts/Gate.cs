@@ -51,10 +51,11 @@ public class Gate : MonoBehaviour
     public WinPositions b2WinPos;
 
     public GameObject[] objectsToChangeColor;
-    public Color winColor;
 
     public Canvas gameCanvas;
     public OpenMinigame openMinigame;
+
+    private Renderer cableRenderer;
     // Start is called before the first frame update
     void Start()
     {
@@ -334,16 +335,20 @@ public class Gate : MonoBehaviour
     void WinAction()
     {
         Debug.Log("YOU WON!!!");
+        CloseCanvas();
+        ChangeObjectColor();
+    }
 
+    private void ChangeObjectColor()
+    {
         foreach (var obj in objectsToChangeColor)
         {
-            var textComponent = obj.GetComponent<TMP_Text>();
-            if (textComponent != null)
+            cableRenderer = obj.GetComponent<Renderer>();
+            if (cableRenderer.material != null)
             {
-                textComponent.color = winColor;
+                cableRenderer.material.color = Color.blue;
             }
         }
-        CloseCanvas();
     }
 
     public void Reset()
@@ -403,4 +408,6 @@ public class Gate : MonoBehaviour
             Debug.LogWarning("OpenMinigame reference is not assigned.");
         }
     }
+
+
 }

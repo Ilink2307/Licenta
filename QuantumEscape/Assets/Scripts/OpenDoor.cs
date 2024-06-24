@@ -3,38 +3,33 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class OpenDoor : MonoBehaviour
+public class OpenDoor : BaseInteractable
 {
     public GameObject object1;
     public GameObject object2;
     public Color targetColor;
-    public KeyCode interactionKey = KeyCode.E; // Key to interact with the object
 
-    private TMP_Text object1TextComponent;
-    private TMP_Text object2TextComponent;
+    private SpriteRenderer object1Renderer;
+    private SpriteRenderer object2Renderer;
 
     void Start()
     {
-        object1TextComponent = object1.GetComponent<TMP_Text>();
-        object2TextComponent = object2.GetComponent<TMP_Text>();
+        object1Renderer = object1.GetComponent<SpriteRenderer>();
+        object2Renderer = object2.GetComponent<SpriteRenderer>();
+        targetColor = object1Renderer.color;
+
     }
 
-    void Update()
+    public override void Interact()
     {
-        if (Input.GetKeyDown(interactionKey))
-        {
-            CheckColorsAndDisappear();
-        }
+        CheckColorsAndDisappear();
     }
 
     void CheckColorsAndDisappear()
     {
-        if (object1TextComponent != null && object2TextComponent != null)
+        if (object1Renderer.color != targetColor && object2Renderer.color != targetColor)
         {
-            if (object1TextComponent.color == targetColor && object2TextComponent.color == targetColor)
-            {
-                gameObject.SetActive(false);
-            }
+            gameObject.SetActive(false);
         }
     }
 }
