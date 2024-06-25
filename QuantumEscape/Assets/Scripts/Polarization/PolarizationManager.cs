@@ -17,25 +17,56 @@ public class PolarizationManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
     public void CheckSnapPoints()
     {
-        bool allSnapped = true;
         foreach (SnapPoint snapPoint in snapPoints)
         {
-            if (!snapPoint.isOccupied)
+            if (snapPoint.isOccupied)
             {
-                allSnapped = false;
-                break;
+                // Enable objects related to this snap point
+                foreach (GameObject obj in snapPoint.objectsToEnable)
+                {
+                    obj.SetActive(true);
+                }
+                foreach (GameObject obj in snapPoint.objectsToDisable)
+                {
+                    obj.SetActive(false);
+                }
+            }
+            else
+            {
+                // Disable objects related to this snap point
+                foreach (GameObject obj in snapPoint.objectsToEnable)
+                {
+                    obj.SetActive(false);
+                }
+                foreach (GameObject obj in snapPoint.objectsToDisable)
+                {
+                    obj.SetActive(true);
+                }
             }
         }
+    }
 
-        foreach (GameObject obj in objectsToToggle)
+    public void ResetObjects()
+    {
+        foreach (SnapPoint snapPoint in snapPoints)
         {
-            obj.SetActive(allSnapped);
+            // Disable objects related to this snap point
+            foreach (GameObject obj in snapPoint.objectsToEnable)
+            {
+                obj.SetActive(false);
+            }
+            // Enable objects related to this snap point
+            foreach (GameObject obj in snapPoint.objectsToDisable)
+            {
+                obj.SetActive(true);
+            }
         }
     }
 }
+

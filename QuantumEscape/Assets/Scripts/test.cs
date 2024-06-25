@@ -8,6 +8,9 @@ public class test : BaseInteractable
     private Vector3 originalScale;
     private Transform playerTransform;
     private Vector3 heldOffset = new Vector3(0, 5, 0); // Offset above the player's head
+    public bool isSnappable = false;
+    private SnapPoint currentSnapPoint = null;
+    public float snapDistanceThreshold = 5.0f;
 
     private void Start()
     {
@@ -36,25 +39,37 @@ public class test : BaseInteractable
         transform.localPosition = heldOffset;
         transform.localScale = originalScale * 0.5f;
 
+        if (currentSnapPoint != null)
+        {
+            currentSnapPoint.isOccupied = false;
+            PolarizationManager.instance.CheckSnapPoints();
+            currentSnapPoint = null;
+        }
+        PolarizationManager.instance.ResetObjects();
+
         Debug.Log("Picked up the object");
     }
 
     public override void Drop(Vector3 dropPosition)
     {
         isPickedUp = false;
-        SnapToNearestPoint();
         transform.position = dropPosition;
         GetComponent<Collider2D>().enabled = true;
         transform.localScale = originalScale;
         transform.SetParent(null);
         Debug.Log("Dropped the object");
+        if(isSnappable)
+        {
+            SnapToNearestPoint();
+        }
+        
     }
 
     private void SnapToNearestPoint()
     {
         SnapPoint[] snapPoints = FindObjectsOfType<SnapPoint>();
         SnapPoint nearestSnapPoint = null;
-        float nearestDistance = float.MaxValue;
+        float nearestDistance = snapDistanceThreshold;
 
         foreach (SnapPoint snapPoint in snapPoints)
         {
@@ -70,21 +85,13 @@ public class test : BaseInteractable
         {
             transform.position = nearestSnapPoint.snapPosition.position;
             nearestSnapPoint.isOccupied = true;
+            currentSnapPoint = nearestSnapPoint;
             PolarizationManager.instance.CheckSnapPoints();
         }
     }
 
     public void Update()
     {
-        //if (isPickedUp && playerTransform != null)
-        //{
-        //    Debug.Log(playerTransform.position);
-        //    // Update the position of the object to be above the player's head
-        //    Vector3 playerPosition = playerTransform.position;
-        //    Vector3 newPosition = playerPosition + heldOffset;
-        //    transform.localPosition = newPosition;
-
-        //   Debug.Log("Held object position: " + transform.position + " with offset: " + heldOffset);
-        //}
+        
     }
 }
