@@ -11,6 +11,7 @@ public class test : BaseInteractable
     public bool isSnappable = false;
     private SnapPoint currentSnapPoint = null;
     public float snapDistanceThreshold = 5.0f;
+    public bool dissWhenUsed = false;
 
     private void Start()
     {
@@ -61,6 +62,8 @@ public class test : BaseInteractable
         if(isSnappable)
         {
             SnapToNearestPoint();
+            if(dissWhenUsed)
+                gameObject.SetActive(false);
         }
         
     }

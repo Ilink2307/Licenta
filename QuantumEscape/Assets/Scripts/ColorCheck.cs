@@ -29,11 +29,11 @@ public class ColorChecker : MonoBehaviour
     {
         if (obj != null)
         {
-            Renderer renderer = obj.GetComponent<Renderer>();
+            SpriteRenderer renderer = obj.GetComponent<SpriteRenderer>();
             if (renderer != null)
             {
                 // Comparing the material's color to the specified color
-                return renderer.material.color == color;
+                return renderer.color == color;
             }
             else
             {
@@ -53,13 +53,10 @@ public class ColorChecker : MonoBehaviour
         {
             if (obj != null)
             {
-                Renderer renderer = obj.GetComponent<Renderer>();
+                SpriteRenderer renderer = obj.GetComponent<SpriteRenderer>();
                 if (renderer != null)
                 {
-                    Material material = renderer.material;
-                    material.color = color;
-                    material.SetColor("_BaseColor", color); // For URP/LWRP
-                    material.SetColor("_Color", color); // For standard shaders
+                    renderer.color = color;
                 }
                 else
                 {

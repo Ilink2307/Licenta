@@ -20,16 +20,20 @@ public class OpenDoor : BaseInteractable
 
     }
 
-    public override void Interact()
-    {
-        CheckColorsAndDisappear();
-    }
+    //public override void Interact()
+    //{
+    //    CheckColorsAndDisappear();
+    //}
 
-    void CheckColorsAndDisappear()
+    private void Update()
     {
         if (object1Renderer.color != targetColor && object2Renderer.color != targetColor)
         {
             gameObject.SetActive(false);
         }
     }
+    //void CheckColorsAndDisappear()
+    //{
+        
+    //}
 }
