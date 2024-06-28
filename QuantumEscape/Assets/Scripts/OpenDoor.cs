@@ -25,6 +25,10 @@ public class OpenDoor : BaseInteractable
         CheckColorsAndDisappear();
     }
 
+    private void Update()
+    {
+        
+    }
     void CheckColorsAndDisappear()
     {
         if (object1Renderer.color != targetColor && object2Renderer.color != targetColor)

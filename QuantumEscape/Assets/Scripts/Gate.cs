@@ -55,7 +55,7 @@ public class Gate : MonoBehaviour
     public Canvas gameCanvas;
     public OpenMinigame openMinigame;
 
-    private Renderer cableRenderer;
+    private SpriteRenderer cableRenderer;
     // Start is called before the first frame update
     void Start()
     {
@@ -343,11 +343,8 @@ public class Gate : MonoBehaviour
     {
         foreach (var obj in objectsToChangeColor)
         {
-            cableRenderer = obj.GetComponent<Renderer>();
-            if (cableRenderer.material != null)
-            {
-                cableRenderer.material.color = Color.blue;
-            }
+            cableRenderer = obj.GetComponent<SpriteRenderer>();
+            cableRenderer.color = Color.blue;
         }
     }
 

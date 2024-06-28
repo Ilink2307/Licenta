@@ -6,7 +6,6 @@ public class OpenMinigame : BaseInteractable
 {
     public GameObject interactionCanvas;
     private PlayerMovement playerMovement;
-    private bool puzzleSolved = false;
 
     void Start()
     {
@@ -50,8 +49,6 @@ public class OpenMinigame : BaseInteractable
 
     public void DisableInteraction()
     {
-        puzzleSolved = true; // Set the flag to true
-        // Optionally, disable the entire script
         this.enabled = false;
     }
 }

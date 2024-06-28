@@ -13,20 +13,16 @@ public class InventoryManager : MonoBehaviour
     public Color targetColorWhenUnsolved = Color.red;
     public Color cableColor = Color.blue; // Desired color
 
-    private Renderer targetRenderer;
-    private Material targetMaterial;
-    private Renderer cableRenderer;
-    private Material cableMaterial;
+    private SpriteRenderer targetRenderer;
+    private SpriteRenderer cableRenderer;
 
     private void Start()
     {
-        targetRenderer = targetObject.GetComponent<Renderer>();
-        cableRenderer = cableObject.GetComponent<Renderer>();
+        targetRenderer = targetObject.GetComponent<SpriteRenderer>();
+        cableRenderer = cableObject.GetComponent<SpriteRenderer>();
         if (targetRenderer != null && cableRenderer)
         {
-            targetMaterial = targetRenderer.material;
-            targetMaterial.color = targetColorWhenUnsolved;
-            cableMaterial = cableRenderer.material;
+            targetRenderer.color = targetColorWhenUnsolved;
         }
         else
         {
@@ -63,16 +59,12 @@ public class InventoryManager : MonoBehaviour
     }
     private void ChangeObjectColor()
     {
-        if (targetMaterial != null && cableMaterial!=null)
-        {
-            // Change the color to green when puzzle is solved
-            targetMaterial.color = targetColor;
-            cableMaterial.color = cableColor;
-        }
-        else
-        {
-            Debug.LogWarning("Target material reference is not assigned.");
-        }
+        //if (targetMaterial != null && cableMaterial!=null)
+        //{
+        // Change the color to green when puzzle is solved
+        targetRenderer.color = targetColor;
+        cableRenderer.color = cableColor;
+        //}
     }
 
     private void DisableInteraction()
