@@ -195,12 +195,17 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
-                    tempObj.Interact();
-                    heldObject = tempObj;
+                    if(tempObj is test pickableObj)
+                    {
+                        pickableObj.Interact();
+                        heldObject = pickableObj;
+                    }
+                    else
+                    {
+                        tempObj.Interact();
+                    }
+                    
                 }
-                
-
-                
             }
         }
         else

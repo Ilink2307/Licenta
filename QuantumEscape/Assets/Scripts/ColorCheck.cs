@@ -32,7 +32,6 @@ public class ColorChecker : MonoBehaviour
             SpriteRenderer renderer = obj.GetComponent<SpriteRenderer>();
             if (renderer != null)
             {
-                // Comparing the material's color to the specified color
                 return renderer.color == color;
             }
             else
